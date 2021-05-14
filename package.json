@@ -1,0 +1,20 @@
+{
+	"name": "socket-player",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"dev": "nodemon server.js",
+		"start": "node server.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.16.3",
+		"mediaserver": "^0.1.1",
+		"nanoid": "^3.1.20",
+		"socket.io": "^2.1.1"
+	}
+}
