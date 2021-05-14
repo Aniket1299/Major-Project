@@ -47,7 +47,7 @@ const isAuthenticated = (req, res, next) => {
 	} else {
 		// Authentication done redirecting to room
 		return res.redirect(
-			`https://syncex.herokuapp.com//?roomno=${roomno}`
+			`https://syncex.herokuapp.com/?roomno=${roomno}`
 		);
 	}
 };
