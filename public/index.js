@@ -1,6 +1,6 @@
 // Client
 
-let initialUrl = "https://syncex.herokuapp.com/";
+let initialUrl = "https://syncex.herokuapp.com";
 // Input Username
 let userId = document.getElementById("username");
 // Room No
