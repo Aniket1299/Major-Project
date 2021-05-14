@@ -7,7 +7,7 @@ const notifPermission = document.getElementById("notif_permission");
 const muteButton = document.getElementById("mute_toggle");
 const speakerButton = document.getElementById("speaker_toggle");
 // Initialising socket
-const socket = io("https://syncex.herokuapp.com/", {
+const socket = io("https://syncex.herokuapp.com", {
 	reconnect: false,
 });
 
@@ -43,7 +43,7 @@ window.onbeforeunload = () => {
 };
 
 // Buildig room URL for copy link button
-let room_URL = `https://syncex.herokuapp.com//room/${roomno}`;
+let room_URL = `https://syncex.herokuapp.com/room/${roomno}`;
 let key=roomno;
 
 document.getElementById("userDetail").innerText = current_username;
@@ -52,7 +52,7 @@ const navbarToggle = document.getElementsByClassName("navbar-toggler")[0];
 
 // Room does not exist
 socket.on("room does not exist", () => {
-	window.location.href = "https://syncex.herokuapp.com/";
+	window.location.href = "https://syncex.herokuapp.com";
 });
 
 // Listenting for host reply
@@ -65,7 +65,7 @@ socket.on("enter room", (isAllowed) => {
 		document.getElementsByTagName("footer")[0].removeAttribute("hidden");
 	}
 	// not allowed to enter the room
-	else window.location.href = "https://syncex.herokuapp.com/";
+	else window.location.href = "https://syncex.herokuapp.com";
 });
 
 let streamObj;
