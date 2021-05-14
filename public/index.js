@@ -112,7 +112,7 @@ function join() {
 // Utility function for sending request to server
 function httpGet(theUrl) {
 	var client = new XMLHttpRequest();
-	client.open("GET", theUrl,[async=true]); // false for synchronous request
+	client.open("GET", theUrl,false); // false for synchronous request
 	client.send(null);
 	return client.responseText;
 }
