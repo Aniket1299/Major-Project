@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			href="https://raw.githubusercontent.com/Aniket1299/Major-Project/af9108dc4fa90ba2dc685b9314c057a753a47e89/cd-player.svg"
+		/>
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+			crossorigin="anonymous"
+		/>
+		<link rel="preconnect" href="https://fonts.gstatic.com" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Langar&display=swap"
+			rel="stylesheet"
+		/>
+		<title>Syncex</title>
+	</head>
+	<body class="text-center" style="background-color: #131516; color: white">
+		<div
+			class="text-center jumbotron pb-4 mt-n5"
+			style="background-color: #131516"
+		>
+			<div class="container">
+				<h1 class="display-3">
+					<img
+						src="https://raw.githubusercontent.com/Aniket1299/Major-Project/af9108dc4fa90ba2dc685b9314c057a753a47e89/cd-player.svg"
+						alt="Play"
+						style="width: 60px; height: 60px; cursor: pointer"
+						onclick="redirect()"
+					/>
+					<span
+						style="
+							color: white;
+							font-family: 'Langar', cursive;
+							cursor: pointer;
+						"
+						onclick="redirect()"
+						>Syncex</span
+					>
+				</h1>
+			</div>
+		</div>
+
+		<main role="main" class="inner cover mt-3">
+			<h1 class="cover-heading mt-5">Invalid Room Number</h1>
+
+			<p class="lead mt-4">
+				<a
+					href="http://localhost:5000"
+					class="btn btn-lg btn-success"
+					id="return_to_home"
+					>Return to Home Screen</a
+				>
+			</p>
+		</main>
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script
+			src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"
+		></script>
+		<script>
+			const return_btn = document.getElementById("return_to_home");
+			function redirect() {
+				window.location.href = "http://localhost:5000";
+			}
+			document.onkeypress = (e) => {
+				if (e.keyCode == 13) return_btn.click();
+			};
+		</script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>
