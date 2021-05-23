@@ -199,17 +199,6 @@ io.on("connection", (socket,username) => {
 		else io.to(socketId).emit("pause");
 	});
 
-	// Host change event
-	socket.on("make me host", () => {
-		rooms[socket.roomno].host = socket.id;
-		rooms[socket.roomno].hostUsername = socket.username;
-		io.in(socket.roomno).emit(
-			"current host",
-			rooms[socket.roomno].hostUsername,
-			rooms[socket.roomno].host
-		);
-	});
-
 	//Chat events
 	socket.on("New Message", (message, username, roomno) => {
 		socket.to(roomno).emit("New Message", message, username);
