@@ -209,12 +209,6 @@ function syncVideo() {
 	if (window.innerWidth < 995) navbarToggle.click();
 }
 
-//Function to change host
-function makeMeHost(hostID) {
-	socket.emit("make me host");
-	if (window.innerWidth < 995) navbarToggle.click();
-}
-
 //Copy Link button functionality to share link
 function copyRoomNo() {
 	let para = document.createElement("textarea");
