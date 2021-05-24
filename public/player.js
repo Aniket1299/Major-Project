@@ -6,7 +6,6 @@ const notifJoin = document.getElementById("notif_join");
 const notifPermission = document.getElementById("notif_permission");
 const muteButton = document.getElementById("mute_toggle");
 const speakerButton = document.getElementById("speaker_toggle");
-// Initialising socket
 const socket = io("https://syncex.herokuapp.com", {
 	reconnect: false,
 });
@@ -14,11 +13,9 @@ const socket = io("https://syncex.herokuapp.com", {
 let curr_socketId;
 let areYouHost = false;
 
-// Getting roomno from URL
 let temp_arr = window.location.pathname.split("/");
 var roomno = temp_arr[temp_arr.length - 1];
 
-// Getting username from URL
 var current_username = new URLSearchParams(window.location.search).get(
 	"username"
 );
@@ -26,23 +23,19 @@ var current_username = new URLSearchParams(window.location.search).get(
 socket.on("connect", () => {
 	curr_socketId = socket.id;
 
-	//Asking permission to enter the room
 	socket.emit("ask permission", roomno, current_username);
 });
 
-/* peer connection for audio chat */
 let myPeerId;
 peer.on("open", (id) => {
 	myPeerId = id;
 });
 const peers = {};
 
-//Confirming on leaving/reloading the page
 window.onbeforeunload = () => {
 	return "Are you sure?";
 };
 
-// Buildig room URL for copy link button
 let room_URL = `https://syncex.herokuapp.com/room/${roomno}`;
 let key=roomno;
 
@@ -50,21 +43,17 @@ document.getElementById("userDetail").innerText = current_username;
 
 const navbarToggle = document.getElementsByClassName("navbar-toggler")[0];
 
-// Room does not exist
 socket.on("room does not exist", () => {
 	window.location.href = "https://syncex.herokuapp.com";
 });
 
-// Listenting for host reply
 socket.on("enter room", (isAllowed) => {
-	// allowed to enter the room
 	if (isAllowed) {
 		socket.emit("joinroom", roomno, current_username, myPeerId);
 		document.getElementById("spinner").remove();
 		document.getElementById("body-content").removeAttribute("hidden");
 		document.getElementsByTagName("footer")[0].removeAttribute("hidden");
 	}
-	// not allowed to enter the room
 	else window.location.href = "https://syncex.herokuapp.com";
 });
 
@@ -84,7 +73,6 @@ navigator.mediaDevices
 			});
 		});
 
-		//Notification on new user entry and add audio stream
 		socket.on("new user", (username, peerId) => {
 			notifJoin.play();
 			toastUserAddRemove(username, "joined");
@@ -145,12 +133,8 @@ function speakerToggle() {
 	}
 }
 
-// Array to hold the pending permission of user to enter the room
 askingPermissionUsers = [];
 
-// Utility function to emit accept/deny permission
-// then delete the permission
-// and check for new permission
 function permissionSpliceAndCheckPermission(isAllowed) {
 	socket.emit("isAllowed", isAllowed, askingPermissionUsers[0].socketId);
 	askingPermissionUsers.splice(0, 1);
@@ -161,17 +145,14 @@ function permissionSpliceAndCheckPermission(isAllowed) {
 	}
 }
 
-// Accept new user into the room
 document.getElementById("accept-btn").onclick = () => {
 	permissionSpliceAndCheckPermission(true);
 };
 
-// Decline new user from entering the room
 document.getElementById("decline-btn").onclick = () => {
 	permissionSpliceAndCheckPermission(false);
 };
 
-// New user permission
 socket.on("user permission", (username, socketId) => {
 	notifPermission.play();
 	askingPermissionUsers.push({ username, socketId });
@@ -180,7 +161,6 @@ socket.on("user permission", (username, socketId) => {
 	}, 500);
 });
 
-// Modal displayed to ask permission from host
 function Utility() {
 	document.getElementById(
 		"modal-body"
@@ -193,7 +173,6 @@ function Utility() {
 	$("#exampleModal").modal("show");
 }
 
-// Sync video
 socket.on("get time from host", (socketId) => {
 	socket.emit(
 		"video current state",
@@ -203,13 +182,10 @@ socket.on("get time from host", (socketId) => {
 	);
 });
 
-//Function to manually sync
 function syncVideo() {
 	socket.emit("sync video");
 	if (window.innerWidth < 995) navbarToggle.click();
 }
-
-//Copy Link button functionality to share link
 function copyRoomNo() {
 	let para = document.createElement("textarea");
 	para.id = "copiedLink";
@@ -224,18 +200,14 @@ function copyRoomNo() {
 
 let URL = window.URL || window.webkitURL;
 
-//Initialising Player
 const video_HTML = document.getElementById("video");
 
-//Choose File button implementation
 const addVideoFile = function (_event) {
 	let file = this.files[0];
 	let fileURL = URL.createObjectURL(file);
 	document.getElementById("video").src = fileURL;
 	if (!areYouHost) syncVideo();
 };
-
-//Choose File and Caption button implementation
 const addCaptionFile = function (_event) {
 	let file = this.files[0];
 	let fileURL = URL.createObjectURL(file);
@@ -249,7 +221,7 @@ document
 	.getElementById("caption_input")
 	.addEventListener("change", addCaptionFile);
 
-// play event
+
 video.onplaying = (event) => {
 	if (areYouHost) {
 		socket.emit("play", roomno);
@@ -257,14 +229,14 @@ video.onplaying = (event) => {
 	}
 };
 
-// pause event
+
 video.onpause = (event) => {
 	if (areYouHost) {
 		socket.emit("pause", roomno);
 	}
 };
 
-// seeking event
+
 video.onseeked = (event) => {
 	if (areYouHost) {
 		let was_video_playing = !video.paused;
@@ -273,26 +245,23 @@ video.onseeked = (event) => {
 	}
 };
 
-//Play video
 socket.on("play", () => {
 	video.play();
 });
 
-//Pause video
+
 socket.on("pause", () => {
 	video.pause();
 });
 
-//Seek Video
+
 socket.on("seeked", (data) => {
 	let was_video_playing = !video.paused;
 	video.currentTime = data;
 	if (was_video_playing) video.play();
 });
 
-//List the members present in the room
 socket.on("user_array", (user_array) => {
-	// Getting the array of users in room
 	document.getElementById("no_of_members").innerText = user_array.length;
 	let sidePanel = document.getElementById("sidePanel");
 	sidePanel.innerHTML = "";
@@ -308,14 +277,13 @@ socket.on("user_array", (user_array) => {
 	});
 });
 
-//Detail about the host of the room
 socket.on("current host", (username, hostID) => {
 	if (curr_socketId == hostID) areYouHost = true;
 	else areYouHost = false;
 	document.getElementById("hostDetail").innerText = username;
 });
 
-//Chat Implementation
+
 const inputField = document.getElementById("inputField");
 const sendMessageButton = document.getElementById("sendbutton");
 let chatPanel = document.getElementById("chatpanel");
@@ -325,7 +293,6 @@ let videoCol = document.getElementById("videoCol");
 let chatCol = document.getElementById("chatCol");
 const chatbody = document.getElementById("chatbody");
 
-//Check whether message input field is empty and disable button accordingly
 function checkempty() {
 	if (inputField.value.trim() == "") {
 		sendMessageButton.disabled = true;
@@ -334,7 +301,6 @@ function checkempty() {
 	}
 }
 
-//Function to handle messaging
 function sendmessage() {
 	chatbody.innerHTML += `
 	<div class="col-sm-12 my-auto">
@@ -420,16 +386,16 @@ function chatRoom() {
 	chatToggle();
 	if (window.innerWidth < 995) navbarToggle.click();
 }
-//Handling Notification Events
+
+
 let toastContainer = document.getElementById("toast-container");
 
-//Notification on user leaving room
+
 socket.on("left room", (username, peerId) => {
 	if (peers[peerId]) peers[peerId].close();
 	toastUserAddRemove(username, "left");
 });
 
-//Function to handle notification events
 function toastUserAddRemove(username, eventHappened) {
 	toastContainer.style.padding = "10px";
 	toastContainer.style.backgroundColor = "#181a1b";
@@ -460,7 +426,6 @@ function toastUserAddRemove(username, eventHappened) {
 	}, 5000);
 }
 
-//Send Message on pressing enter key
 document.onkeypress = function (e) {
 	if (e.keyCode == 13 && inputField.value.trim() != "") {
 		sendMessageButton.onclick();
