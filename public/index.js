@@ -1,11 +1,8 @@
 // Client
 
 let initialUrl = "https://syncex.herokuapp.com";
-// Input Username
 let userId = document.getElementById("username");
-// Room No
 let roomNo = document.getElementById("inputRoomNo");
-// get Room No
 let current_roomno = new URLSearchParams(window.location.search).get("roomno");
 let grp1 = document.getElementById("inputGroupPrepend3");
 let grp2 = document.getElementById("inputGroupPrepend4");
@@ -24,18 +21,15 @@ if (username_local !== null) {
 	userId.value = username_local;
 }
 
-// Create New Room
 function create() {
 	const username = userId.value;
 	localStorage.setItem("username", username);
-	// If Username field is not empty new room will be created
 
 	if (username !== "") {
 		let response = httpGet(`${initialUrl}/getRoomNumber`);
 		let url = `${initialUrl}/room/${response}?username=${username}`;
 		window.location.href = url;
 	}
-	// Else it will highlight the required field
 	else {
 		const x = userId.style.boxShadow;
 		const y = grp1.style.boxShadow;
@@ -48,7 +42,6 @@ function create() {
 	}
 }
 
-// Joining an existing Room
 function join() {
 	const username = userId.value;
 	localStorage.setItem("username", username);
@@ -108,8 +101,6 @@ function join() {
 		}
 	}
 }
-
-// Utility function for sending request to server
 function httpGet(theUrl) {
 	var client = new XMLHttpRequest();
 	client.open("GET", theUrl,false); // false for synchronous request
@@ -117,14 +108,11 @@ function httpGet(theUrl) {
 	return client.responseText;
 }
 
-// Joining Room on Enter Key Press
 roomNo.onkeypress = function (e) {
 	if (e.keyCode == 13) {
 		document.getElementById("key").onclick();
 	}
 };
-
-// Creating Room on Enter Key Press
 userId.onkeypress = function (e) {
 	if (e.keyCode == 13) {
 		if (roomNo.value != "") {
@@ -135,7 +123,6 @@ userId.onkeypress = function (e) {
 	}
 };
 
-//Modifying CSS of span field before input field
 function applyShadow1() {
 	roomNo.style.boxShadow = "2px 0 0 2px #368755";
 	var ele = grp2;
@@ -161,7 +148,3 @@ function applyShadow() {
 	ele.style.backgroundColor = "#181a1b";
 }
 
-function buttonFunc() {
-	document.getElementById("btn").style.border = "none";
-	document.getElementById("btn").style.boxShadow = "none";
-}
